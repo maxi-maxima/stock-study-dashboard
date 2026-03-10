@@ -161,6 +161,10 @@
           <ul id="dayPlan"></ul>
         </div>
         <div class="panel" style="margin-top:18px;">
+          <div class="section-title">最近新增知识卡</div>
+          <ul id="recentCards"></ul>
+        </div>
+        <div class="panel" style="margin-top:18px;">
           <div class="section-title">最近更新</div>
           <ul id="updates"></ul>
         </div>
@@ -266,6 +270,12 @@
         const li = document.createElement('li');
         li.innerHTML = `<strong>${i.order || '-'}｜${i.priority || ''} ${i.title}</strong>：${i.detail}<br><span class="muted">完成定义：${i.doneWhen || '—'}</span>`;
         dayPlan.appendChild(li);
+      });
+      const recentCards = document.getElementById('recentCards'); recentCards.innerHTML = '';
+      (data.recentCards || []).forEach(i => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${i.title}</strong>`;
+        recentCards.appendChild(li);
       });
       const updates = document.getElementById('updates'); updates.innerHTML = '';
       (data.recentUpdates || []).forEach(i => { const li = document.createElement('li'); li.textContent = i; updates.appendChild(li); });
