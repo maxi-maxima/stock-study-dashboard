@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>股票学习指挥台</title>
+  <style>
+    :root {
+      --bg: #070b16;
+      --bg2: #0c1328;
+      --panel: rgba(17, 24, 45, 0.88);
+      --panel-soft: rgba(24, 34, 63, 0.92);
+      --text: #ebf1ff;
+      --muted: #97a3c8;
+      --line: rgba(255,255,255,.08);
+      --accent: #7c9cff;
+      --accent2: #59e1c4;
+      --warn: #ffbf69;
+      --danger: #ff6b81;
+      --good: #59e1c4;
+      --shadow: 0 16px 40px rgba(0,0,0,.34);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(124,156,255,.18), transparent 24%),
+        radial-gradient(circle at 90% 0%, rgba(89,225,196,.12), transparent 22%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1380px; margin: 0 auto; padding: 26px; }
+    .topbar, .hero, .layout, .bottom-grid {
+      display: grid;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .topbar { grid-template-columns: 1.3fr .7fr; }
+    .hero { grid-template-columns: 1.15fr .85fr; }
+    .layout { grid-template-columns: 1.05fr .95fr; }
+    .bottom-grid { grid-template-columns: .9fr 1.1fr; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .header-title { font-size: 34px; font-weight: 800; margin: 0 0 6px; }
+    .sub { color: var(--muted); }
+    .statusline { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+    .pill { border:1px solid var(--line); background: rgba(255,255,255,.03); border-radius:999px; padding:8px 12px; font-size:13px; }
+    .main-progress { display:flex; flex-direction:column; justify-content:center; min-height: 220px; }
+    .big { font-size: 64px; font-weight: 900; line-height: 1; margin: 10px 0 8px; }
+    .bar { height: 16px; background: #233154; border-radius: 999px; overflow: hidden; }
+    .fill { height:100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius:999px; }
+    .summary-grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .mini { background: var(--panel-soft); border:1px solid var(--line); border-radius:16px; padding:14px; }
+    .mini .k { font-size: 13px; color: var(--muted); }
+    .mini .v { font-size: 28px; font-weight: 800; margin-top:8px; }
+    .section-title { font-size: 17px; font-weight: 700; margin-bottom: 12px; }
+    .track, .agent, .alert { background: var(--panel-soft); border:1px solid var(--line); border-radius:16px; padding:14px; margin-bottom:12px; }
+    .row { display:flex; justify-content:space-between; gap:12px; align-items:center; }
+    .name { font-weight: 700; }
+    .tag, .detail, .muted { color: var(--muted); font-size: 13px; }
+    .detail { margin-top:8px; }
+    .priority { padding:4px 8px; border-radius:999px; font-size:12px; border:1px solid var(--line); color: var(--warn); background: rgba(255,191,105,.08); }
+    .state { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; font-size:12px; background: rgba(89,225,196,.08); color: var(--good); border:1px solid rgba(89,225,196,.2); }
+    .dot { width:10px; height:10px; border-radius:999px; background: currentColor; box-shadow: 0 0 14px currentColor; }
+    ul { margin:0; padding-left:18px; }
+    li { margin: 9px 0; }
+    .timeline-item { display:grid; grid-template-columns:76px 1fr; gap:12px; padding:10px 0; border-bottom:1px dashed rgba(255,255,255,.08); }
+    .timeline-item:last-child { border-bottom:none; }
+    .time { color: var(--accent2); font-weight: 700; }
+    .chart-wrap { background: var(--panel-soft); border:1px solid var(--line); border-radius:16px; padding:14px; }
+    .chart { width:100%; height:200px; display:block; }
+    .chart-labels { display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; margin-top:10px; }
+    .chart-label { text-align:center; color: var(--muted); font-size: 12px; }
+    .alert.good { border-color: rgba(89,225,196,.25); background: rgba(89,225,196,.08); }
+    .alert.warn { border-color: rgba(255,191,105,.25); background: rgba(255,191,105,.08); }
+    .alert.danger { border-color: rgba(255,107,129,.25); background: rgba(255,107,129,.08); }
+    .brief-grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .footer { margin-top:18px; color: var(--muted); font-size: 13px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    @media (max-width: 1100px) {
+      .topbar, .hero, .layout, .bottom-grid, .summary-grid, .brief-grid { grid-template-columns: 1fr; }
+      .big { font-size: 48px; }
+      .chart-labels { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="panel">
+        <div class="header-title">股票学习指挥台</div>
+        <div class="sub">不只是看进度。你现在是在盯一个真正会推进的控制面。</div>
+        <div class="statusline">
+          <div class="pill" id="updatedAt">更新时间：--</div>
+          <div class="pill" id="clock">当前时间：--</div>
+          <div class="pill">模式：非压缩包优先</div>
+          <div class="pill">语言：中文</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="section-title">当前焦点</div>
+        <div class="sub" id="focus">--</div>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="panel main-progress">
+        <div class="muted">绫码学习掌握进度（不是资料搬运进度）</div>
+        <div class="big" id="overallText">0%</div>
+        <div class="bar"><div class="fill" id="overallBar" style="width:0%"></div></div>
+        <div class="sub" id="overallDesc" style="margin-top:12px;">按知识骨架、结构化提炼、规则沉淀、稳定输出四段计分，不再拿假数字糊弄你。</div>
+      </div>
+      <div class="summary-grid" id="summary"></div>
+    </div>
+
+    <div class="layout">
+      <div>
+        <div class="panel">
+          <div class="section-title">资料 / 网站进度</div>
+          <div id="tracks"></div>
+        </div>
+        <div class="panel" style="margin-top:18px;">
+          <div class="section-title">推进时间线</div>
+          <div id="timeline"></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <div class="section-title">Agents 状态</div>
+          <div id="agents"></div>
+        </div>
+        <div class="panel" style="margin-top:18px;">
+          <div class="section-title">风险 / 告警</div>
+          <div id="alerts"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-grid">
+      <div class="panel">
+        <div class="section-title">进度曲线</div>
+        <div class="chart-wrap">
+          <svg class="chart" id="chart" viewBox="0 0 520 200" preserveAspectRatio="none"></svg>
+          <div class="chart-labels" id="chartLabels"></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <div class="section-title">晨报任务</div>
+          <div class="brief-grid" id="briefing"></div>
+        </div>
+        <div class="panel" style="margin-top:18px;">
+          <div class="section-title">最近更新</div>
+          <ul id="updates"></ul>
+        </div>
+        <div class="panel" style="margin-top:18px;">
+          <div class="section-title">当前阻塞</div>
+          <ul id="blockers"></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>已启用自动刷新：每 20 秒同步一次本地数据。</div>
+      <div>下一步可继续加：更多 agent、真正的历史数据库、悬浮小窗、手动控制按钮。</div>
+    </div>
+  </div>
+
+  <script>
+    function setClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent = '当前时间：' + now.toLocaleString('zh-CN', { hour12: false });
+    }
+    function toneBg(tone) {
+      if (tone === 'warn') return 'rgba(255,191,105,.08)';
+      if (tone === 'danger') return 'rgba(255,107,129,.08)';
+      return 'rgba(89,225,196,.08)';
+    }
+    function renderChart(values, labels) {
+      const svg = document.getElementById('chart');
+      const labelBox = document.getElementById('chartLabels');
+      svg.innerHTML = '';
+      labelBox.innerHTML = '';
+      if (!values || !values.length) return;
+      const w = 520, h = 200, pad = 20;
+      const max = 100, min = 0;
+      const stepX = values.length > 1 ? (w - pad * 2) / (values.length - 1) : 0;
+      const pts = values.map((v, i) => {
+        const x = pad + i * stepX;
+        const y = h - pad - ((v - min) / (max - min)) * (h - pad * 2);
+        return [x, y];
+      });
+      for (let i = 0; i <= 4; i++) {
+        const y = pad + i * ((h - pad * 2) / 4);
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', pad); line.setAttribute('x2', w - pad); line.setAttribute('y1', y); line.setAttribute('y2', y);
+        line.setAttribute('stroke', 'rgba(255,255,255,.08)'); line.setAttribute('stroke-width', '1');
+        svg.appendChild(line);
+      }
+      const area = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const path = pts.map((p, i) => `${i===0?'M':'L'}${p[0]},${p[1]}`).join(' ');
+      area.setAttribute('d', `${path} L ${pts[pts.length-1][0]},${h-pad} L ${pts[0][0]},${h-pad} Z`);
+      area.setAttribute('fill', 'rgba(124,156,255,.18)');
+      line.setAttribute('d', path);
+      line.setAttribute('fill', 'none');
+      line.setAttribute('stroke', '#59e1c4');
+      line.setAttribute('stroke-width', '4');
+      line.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(area); svg.appendChild(line);
+      pts.forEach((p, idx) => {
+        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('cx', p[0]); c.setAttribute('cy', p[1]); c.setAttribute('r', 5); c.setAttribute('fill', '#7c9cff');
+        svg.appendChild(c);
+        const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        txt.setAttribute('x', p[0]); txt.setAttribute('y', p[1] - 10); txt.setAttribute('fill', '#ebf1ff'); txt.setAttribute('font-size', '12'); txt.setAttribute('text-anchor', 'middle');
+        txt.textContent = values[idx] + '%'; svg.appendChild(txt);
+      });
+      (labels || []).forEach(l => {
+        const el = document.createElement('div');
+        el.className = 'chart-label'; el.textContent = l; labelBox.appendChild(el);
+      });
+    }
+    async function loadDashboard() {
+      const res = await fetch('./dashboard-data.json?_=' + Date.now());
+      const data = await res.json();
+      document.getElementById('updatedAt').textContent = '更新时间：' + data.updatedAt;
+      document.getElementById('focus').textContent = data.focus || '--';
+      document.getElementById('overallText').textContent = (data.selfLearningProgress ?? 0) + '%';
+      document.getElementById('overallBar').style.width = (data.selfLearningProgress ?? 0) + '%';
+      document.getElementById('overallDesc').textContent = data.selfLearningDesc || '按知识骨架、结构化提炼、规则沉淀、稳定输出四段计分。';
+      const summary = document.getElementById('summary'); summary.innerHTML = '';
+      (data.summary || []).forEach(item => {
+        const el = document.createElement('div'); el.className = 'panel mini'; el.style.background = toneBg(item.tone);
+        el.innerHTML = `<div class="k">${item.label}</div><div class="v">${item.value}</div>`; summary.appendChild(el);
+      });
+      const tracks = document.getElementById('tracks'); tracks.innerHTML = '';
+      (data.tracks || []).forEach(t => {
+        const el = document.createElement('div'); el.className = 'track';
+        el.innerHTML = `<div class="row"><div class="name">${t.name}</div><div style="display:flex;align-items:center;gap:8px;"><span class="priority">${t.priority || ''}</span><span class="tag">${t.status} · ${t.progress}%</span></div></div><div class="bar" style="margin-top:10px;"><div class="fill" style="width:${t.progress}%"></div></div><div class="detail">${t.detail}</div>`;
+        tracks.appendChild(el);
+      });
+      const agents = document.getElementById('agents'); agents.innerHTML = '';
+      (data.agents || []).forEach(a => {
+        const el = document.createElement('div'); el.className = 'agent';
+        el.innerHTML = `<div class="row"><div class="name">${a.name}</div><div class="state"><span class="dot"></span>${a.state}</div></div><div class="detail">当前任务：${a.task}</div><div class="detail">最近动作：${a.last || '—'}</div>`;
+        agents.appendChild(el);
+      });
+      const alerts = document.getElementById('alerts'); alerts.innerHTML = '';
+      (data.alerts || []).forEach(a => {
+        const el = document.createElement('div'); el.className = 'alert ' + (a.level || 'warn'); el.textContent = a.text; alerts.appendChild(el);
+      });
+      const updates = document.getElementById('updates'); updates.innerHTML = '';
+      (data.recentUpdates || []).forEach(i => { const li = document.createElement('li'); li.textContent = i; updates.appendChild(li); });
+      const blockers = document.getElementById('blockers'); blockers.innerHTML = '';
+      (data.blockers || []).forEach(i => { const li = document.createElement('li'); li.textContent = i; blockers.appendChild(li); });
+      const timeline = document.getElementById('timeline'); timeline.innerHTML = '';
+      (data.timeline || []).forEach(i => { const el = document.createElement('div'); el.className = 'timeline-item'; el.innerHTML = `<div class="time">${i.time}</div><div>${i.event}</div>`; timeline.appendChild(el); });
+      const briefing = document.getElementById('briefing'); briefing.innerHTML = '';
+      const b = data.briefing || {};
+      [['时间', b.time], ['状态', b.status], ['投递', b.target], ['范围', b.scope]].forEach(([k,v]) => {
+        const el = document.createElement('div'); el.className = 'panel mini'; el.innerHTML = `<div class="k">${k}</div><div class="v" style="font-size:20px;">${v || '--'}</div>`; briefing.appendChild(el);
+      });
+      renderChart(data.progressHistory || [], data.progressLabels || []);
+    }
+    setClock(); loadDashboard(); setInterval(setClock, 1000); setInterval(loadDashboard, 20000);
+  </script>
+</body>
+</html>
