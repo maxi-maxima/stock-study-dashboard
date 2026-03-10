@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
   "mode": "unified-auto",
-  "updatedAt": "2026-03-10 10:56 GMT+8",
+  "updatedAt": "2026-03-10 10:58 GMT+8",
   "selfLearningProgress": 35,
   "selfLearningDesc": "唯一主进度口径：绫码学习掌握度。按知识骨架、结构化提炼、规则沉淀、稳定输出四段自动计分。",
   "projectProgress": 42,
@@ -99,24 +99,32 @@
   ],
   "nightBlockers": [
     {
-      "title": "坏 PDF：xiatian77_02.pdf",
-      "detail": "文本抽取接近 0，夜间应标记为 OCR / 抽帧候选，不再死磕纯文本。",
+      "order": 1,
+      "title": "确认视频/音频对象是否仍缺位",
+      "detail": "若仍无可直接处理的视频/音频文件，夜间不得伪造视频学习进度。",
+      "doneWhen": "确认无新增媒体对象，或将新增对象加入夜间队列顶部。",
       "priority": "P1"
     },
     {
-      "title": "坏 PDF：xiatian77_03.pdf",
-      "detail": "文本几乎只剩水印，当前不适合作为主线直接文本来源。",
+      "order": 2,
+      "title": "坏 PDF：xiatian77_02.pdf / xiatian77_03.pdf",
+      "detail": "维持坏 PDF / 待 OCR / 待抽帧标记，不再死磕纯文本抽取。",
+      "doneWhen": "阻塞状态、处理策略、可读旁证三者至少更新其一。",
       "priority": "P1"
     },
     {
-      "title": "空 txt 批次",
-      "detail": "longfeihu77 目录下多份 0 字 txt，先记为来源异常 / 待复查，不计入有效学习量。",
+      "order": 3,
+      "title": "空 txt / 异常导出批次",
+      "detail": "复查 longfeihu77 目录下多份 0 字 txt，标记为来源异常 / 待复查。",
+      "doneWhen": "至少新增 1 条异常来源判断或复查策略。",
       "priority": "P1"
     },
     {
-      "title": "视频对象缺位",
-      "detail": "当前工作区未发现可直接推进的视频/音频文件，夜间不应伪造视频进度。",
-      "priority": "P1"
+      "order": 4,
+      "title": "可读样本补证",
+      "detail": "若前序阻塞已梳理，则优先补 net767 卖出/看盘/买入样本卡片。",
+      "doneWhen": "progress.md 与 findings.md 至少各新增 1 条记录。",
+      "priority": "P2"
     }
   ],
   "timeline": [

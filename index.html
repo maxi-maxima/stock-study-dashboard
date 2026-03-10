@@ -262,7 +262,7 @@
       const blockers = document.getElementById('blockers'); blockers.innerHTML = '';
       (data.nightBlockers || []).forEach(i => {
         const li = document.createElement('li');
-        li.innerHTML = `<strong>${i.priority || ''} ${i.title}</strong>：${i.detail}`;
+        li.innerHTML = `<strong>${i.order || '-'}｜${i.priority || ''} ${i.title}</strong>：${i.detail}<br><span class="muted">完成定义：${i.doneWhen || '—'}</span>`;
         blockers.appendChild(li);
       });
       if ((data.nightBlockers || []).length === 0) {
