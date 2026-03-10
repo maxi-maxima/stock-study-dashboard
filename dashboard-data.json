@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
   "mode": "unified-auto",
-  "updatedAt": "2026-03-10 11:04 GMT+8",
+  "updatedAt": "2026-03-10 11:16 GMT+8",
   "selfLearningProgress": 35,
   "selfLearningDesc": "唯一主进度口径：绫码学习掌握度。按知识骨架、结构化提炼、规则沉淀、稳定输出四段自动计分。",
   "projectProgress": 42,
@@ -124,6 +124,36 @@
       "title": "可读样本补证",
       "detail": "若前序阻塞已梳理，则优先补 net767 卖出/看盘/买入样本卡片。",
       "doneWhen": "progress.md 与 findings.md 至少各新增 1 条记录。",
+      "priority": "P2"
+    }
+  ],
+  "dayPlan": [
+    {
+      "order": 1,
+      "title": "夏天77可读材料 / 可读旁证",
+      "detail": "白天先啃主骨架，不被坏 PDF 拖死。",
+      "doneWhen": "至少新增 1 条关于预期/竞价/龙头/分时/体系关系的提炼。",
+      "priority": "P1"
+    },
+    {
+      "order": 2,
+      "title": "集合竞价教程横向对照",
+      "detail": "继续补共识与冲突点，巩固规则主轴。",
+      "doneWhen": "至少新增 1 条共识或冲突记录。",
+      "priority": "P1"
+    },
+    {
+      "order": 3,
+      "title": "net767 高价值抽样",
+      "detail": "优先卖出/看盘/买入，补纪律与案例。",
+      "doneWhen": "至少形成 1 条纪律卡片、案例卡片或盘口语言样本。",
+      "priority": "P2"
+    },
+    {
+      "order": 4,
+      "title": "阶段复核",
+      "detail": "主线判断变化改 task_plan；新增证据写 findings/progress。",
+      "doneWhen": "本轮处理对象、结论、下一步可追溯。",
       "priority": "P2"
     }
   ],

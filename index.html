@@ -157,6 +157,10 @@
           <div class="brief-grid" id="briefing"></div>
         </div>
         <div class="panel" style="margin-top:18px;">
+          <div class="section-title">白天主线作战单</div>
+          <ul id="dayPlan"></ul>
+        </div>
+        <div class="panel" style="margin-top:18px;">
           <div class="section-title">最近更新</div>
           <ul id="updates"></ul>
         </div>
@@ -256,6 +260,12 @@
       const alerts = document.getElementById('alerts'); alerts.innerHTML = '';
       (data.alerts || []).forEach(a => {
         const el = document.createElement('div'); el.className = 'alert ' + (a.level || 'warn'); el.textContent = a.text; alerts.appendChild(el);
+      });
+      const dayPlan = document.getElementById('dayPlan'); dayPlan.innerHTML = '';
+      (data.dayPlan || []).forEach(i => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${i.order || '-'}｜${i.priority || ''} ${i.title}</strong>：${i.detail}<br><span class="muted">完成定义：${i.doneWhen || '—'}</span>`;
+        dayPlan.appendChild(li);
       });
       const updates = document.getElementById('updates'); updates.innerHTML = '';
       (data.recentUpdates || []).forEach(i => { const li = document.createElement('li'); li.textContent = i; updates.appendChild(li); });
