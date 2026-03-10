@@ -161,6 +161,10 @@
           <ul id="dayPlan"></ul>
         </div>
         <div class="panel" style="margin-top:18px;">
+          <div class="section-title">知识卡片分组</div>
+          <div id="cardGroups"></div>
+        </div>
+        <div class="panel" style="margin-top:18px;">
           <div class="section-title">最近新增知识卡</div>
           <ul id="recentCards"></ul>
         </div>
@@ -270,6 +274,20 @@
         const li = document.createElement('li');
         li.innerHTML = `<strong>${i.order || '-'}｜${i.priority || ''} ${i.title}</strong>：${i.detail}<br><span class="muted">完成定义：${i.doneWhen || '—'}</span>`;
         dayPlan.appendChild(li);
+      });
+      const cardGroups = document.getElementById('cardGroups'); cardGroups.innerHTML = '';
+      Object.entries(data.cardGroups || {}).forEach(([name, items]) => {
+        const el = document.createElement('div');
+        el.className = 'track';
+        el.innerHTML = `<div class="row"><div class="name">${name}</div><div class="tag">${items.length} 张</div></div>`;
+        const ul = document.createElement('ul');
+        (items || []).slice(-4).forEach(i => {
+          const li = document.createElement('li');
+          li.innerHTML = `<strong>${i.title}</strong>`;
+          ul.appendChild(li);
+        });
+        el.appendChild(ul);
+        cardGroups.appendChild(el);
       });
       const recentCards = document.getElementById('recentCards'); recentCards.innerHTML = '';
       (data.recentCards || []).forEach(i => {

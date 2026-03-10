@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
   "mode": "unified-auto",
-  "updatedAt": "2026-03-10 11:25 GMT+8",
+  "updatedAt": "2026-03-10 11:33 GMT+8",
   "selfLearningProgress": 35,
   "selfLearningDesc": "唯一主进度口径：绫码学习掌握度。按知识骨架、结构化提炼、规则沉淀、稳定输出四段自动计分。",
   "projectProgress": 42,
@@ -107,6 +107,29 @@
       "title": "阻塞处理卡｜坏 PDF 暂缓硬啃"
     }
   ],
+  "cardGroups": {
+    "卖出纪律": [
+      {
+        "title": "卖出纪律卡｜别执着卖在最高点"
+      },
+      {
+        "title": "卖出纪律卡｜入场前先定止损"
+      },
+      {
+        "title": "卖出纪律卡｜按临界点卖，不按情绪卖"
+      }
+    ],
+    "方法框架": [
+      {
+        "title": "方法框架卡｜夏天77 决策链主骨架"
+      }
+    ],
+    "阻塞处理": [
+      {
+        "title": "阻塞处理卡｜坏 PDF 暂缓硬啃"
+      }
+    ]
+  },
   "blockers": [
     "多数 PDF 为扫描页/图片页，文本提取有限",
     "大量视频未转录",
