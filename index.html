@@ -260,7 +260,14 @@
       const updates = document.getElementById('updates'); updates.innerHTML = '';
       (data.recentUpdates || []).forEach(i => { const li = document.createElement('li'); li.textContent = i; updates.appendChild(li); });
       const blockers = document.getElementById('blockers'); blockers.innerHTML = '';
-      (data.blockers || []).forEach(i => { const li = document.createElement('li'); li.textContent = i; blockers.appendChild(li); });
+      (data.nightBlockers || []).forEach(i => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${i.priority || ''} ${i.title}</strong>：${i.detail}`;
+        blockers.appendChild(li);
+      });
+      if ((data.nightBlockers || []).length === 0) {
+        (data.blockers || []).forEach(i => { const li = document.createElement('li'); li.textContent = i; blockers.appendChild(li); });
+      }
       const timeline = document.getElementById('timeline'); timeline.innerHTML = '';
       (data.timeline || []).forEach(i => { const el = document.createElement('div'); el.className = 'timeline-item'; el.innerHTML = `<div class="time">${i.time}</div><div>${i.event}</div>`; timeline.appendChild(el); });
       const briefing = document.getElementById('briefing'); briefing.innerHTML = '';
