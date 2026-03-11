@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
   "mode": "unified-auto",
-  "updatedAt": "2026-03-11 23:55 GMT+8",
+  "updatedAt": "2026-03-12 00:04 GMT+8",
   "selfLearningProgress": 35,
   "selfLearningDesc": "唯一主进度口径：绫码学习掌握度。按知识骨架、结构化提炼、规则沉淀、稳定输出四段自动计分。",
   "projectProgress": 42,
@@ -24,13 +24,13 @@
     },
     {
       "label": "执行中任务",
-      "value": 0,
-      "tone": "warn"
+      "value": 1,
+      "tone": "good"
     },
     {
       "label": "最近推进",
-      "value": "2026-03-11T09:38:00+08:00",
-      "tone": "good"
+      "value": "--",
+      "tone": "warn"
     },
     {
       "label": "下次调度",
@@ -78,15 +78,15 @@
   "agents": [
     {
       "name": "常驻 Worker",
-      "state": "离线",
-      "task": "当前没有常驻 worker",
-      "last": "已按白天规则补强主线衔接：确认先用夏天77框架定预期与龙头位次，再用集合竞价做开盘前验真与过滤，并完成 findings/progress/cards 回写。"
+      "state": "在线·执行中",
+      "task": "后台学习正在推进",
+      "last": "暂无最近一次推进摘要"
     },
     {
       "name": "学习执行链",
-      "state": "未运行",
-      "task": "当前没有学习任务正在执行",
-      "last": "最近完成：2026-03-11T09:38:00+08:00"
+      "state": "运行中",
+      "task": "后台学习正在推进",
+      "last": "最近完成：--"
     }
   ],
   "recentUpdates": [
@@ -238,8 +238,8 @@
       "text": "资料推进度当前自动估算为 42% ，它不等于绫码真正掌握度。"
     },
     {
-      "level": "warn",
-      "text": "当前没有持续运行的学习执行链；如果不补执行闭环，数字增长仍会偏慢。"
+      "level": "good",
+      "text": "学习执行链当前处于运行中，控制台不再把执行状态误报为 0。"
     }
   ],
   "briefing": {
